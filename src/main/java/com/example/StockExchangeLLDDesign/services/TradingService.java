@@ -25,7 +25,7 @@ public class TradingService {
     private final OrderMatchingStrategy orderMatchingStrategy;
 
     private final ExecutorService executorService=Executors.newFixedThreadPool(10);
-    private final TradeService tradeService;
+    private final ITradeService tradeService;
 
     public void placeOrder(Order order){
         order.setOrderAcceptedTimeStamp(LocalDateTime.now());
