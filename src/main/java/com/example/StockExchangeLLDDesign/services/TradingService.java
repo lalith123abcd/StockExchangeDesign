@@ -1,6 +1,7 @@
 package com.example.StockExchangeLLDDesign.services;
 
 import com.example.StockExchangeLLDDesign.data.IOrderBook;
+import com.example.StockExchangeLLDDesign.dtos.OrderRequest;
 import com.example.StockExchangeLLDDesign.models.Order;
 import com.example.StockExchangeLLDDesign.models.OrderStatus;
 import com.example.StockExchangeLLDDesign.models.OrderType;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TradingService {
+public class TradingService implements ITradingService {
 
     private final IOrderBook orderBook;
     private final OrderMatchingStrategy orderMatchingStrategy;
@@ -27,7 +28,15 @@ public class TradingService {
     private final ExecutorService executorService=Executors.newFixedThreadPool(10);
     private final ITradeService tradeService;
 
-    public void placeOrder(Order order){
+    public Order placeOrder(OrderRequest orderRequest){
+        Order order = Order.builder()
+                .userId(orderRequest.getUserId())
+                .orderType(orderRequest.getOrderType())
+                .stockSymbol(orderRequest.getStockSymbol())
+                .quantity(orderRequest.getQuantity())
+                .price(orderRequest.getPrice())
+                .build();
+
         order.setOrderAcceptedTimeStamp(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.ACCEPTED);
         order.setRemainingQuantity(order.getQuantity());
@@ -42,10 +51,12 @@ public class TradingService {
                 log.info("Error during exceute order match",e);
             }
         },executorService);
+
+        return order;
     }
 
 
-    private void executeOrderMatch(Order newOrder){
+    public  void executeOrderMatch(Order newOrder){
         String stockSymbol=newOrder.getStockSymbol();
 
         List<Order> existingOrders=orderBook.getOrders(stockSymbol);
@@ -70,6 +81,10 @@ public class TradingService {
 
 
 
+    }
+
+    public List<Order> getOrderBooks(String symbol){
+       return orderBook.getOrders(symbol);
     }
 
 

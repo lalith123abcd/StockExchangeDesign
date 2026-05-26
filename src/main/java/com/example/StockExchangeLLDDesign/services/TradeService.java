@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class TradeService {
+public class TradeService implements ITradeService{
 
     private final Map<String, Trade> tradeMap=new ConcurrentHashMap<>();
 
