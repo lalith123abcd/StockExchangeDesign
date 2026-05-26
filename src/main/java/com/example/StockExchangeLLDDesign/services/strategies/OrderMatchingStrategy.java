@@ -9,5 +9,8 @@ public interface OrderMatchingStrategy {
 
     String getStrategyName();
 
-    List<Trade> matchOrder(Order newOrder, List<Order> existingOrders)
+    List<Trade> matchOrder(Order newOrder, List<Order> existingOrders);
+
+    List<Trade> matchBuyOrders(Order newOrder,List<Order> existingOrders);
+    List<Trade> matchSellOrders(Order newOrder,List<Order> existingOrders);
 }

@@ -26,7 +26,7 @@ public class Order{
     private OrderType orderType;
 
     @NotBlank(message = "stock id is req")
-    private String stockId;
+    private String stockSymbol;
 
     private int quantity;
 
